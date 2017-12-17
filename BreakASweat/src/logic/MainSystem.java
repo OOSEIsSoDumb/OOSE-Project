@@ -80,7 +80,7 @@ public class MainSystem {
 		ArrayList<TempContributorRecord> contributorRegister = db.getContributorRegister();
 
 		for (TempContributorRecord tempcontributor : contributorRegister) {
-			Contributor contributors = new Contributor(tempcontributor.getUsername(), tempcontributor.getPassword());
+			Contributor contributors = new Contributor(tempcontributor.getUsername(), tempcontributor.getPassword(),tempcontributor.getGender(), tempcontributor.getProfession(), tempcontributor.getContactNo());
 			contributorlist.add(contributors);
 		}
 

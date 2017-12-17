@@ -2,7 +2,10 @@ package UI;
 
 import java.awt.EventQueue;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -13,16 +16,27 @@ import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
+import Data.DatabaseManager;
+import Data.TempUserRecord;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+import logic.MainSystem;
+
+import javax.swing.*;
 
 public class UserLoginForm {
 
 	JFrame frame;
 	private JTextField txt_username;
 	private JPasswordField pf_loginpassword;
-
+	private JCheckBox cb_isContributor;
+	MainSystem system = new MainSystem("Workout");
+	DatabaseManager db;
+	Register register;
 	/**
 	 * Launch the application.
 	 */
@@ -62,7 +76,61 @@ public class UserLoginForm {
 		frame.getContentPane().add(txt_username);
 		txt_username.setColumns(10);
 		
+		cb_isContributor = new JCheckBox("Login as Contributor");
+		cb_isContributor.setFont(new Font("Times New Roman", Font.ITALIC, 14));
+		cb_isContributor.setBounds(280, 160, 176, 23);
+		frame.getContentPane().add(cb_isContributor);
+		
 		JButton btn_login = new JButton("Login");
+		btn_login.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String username= txt_username.getText();
+				String password = pf_loginpassword.getText();
+				
+				if(cb_isContributor.isSelected()){
+					if(register!=null && register.registerredContributor()>3){		//make sure the register has opened before and the Contributor has been registered.
+						if(register.verifyContReg(username, password)){
+							MainMenuForm main = new MainMenuForm();
+							main.setVisible(true);
+							main.setBounds(100, 100, 800, 550);
+							
+						}else{
+							JOptionPane.showMessageDialog(frame, "Wrong ID or password"  ,"Error", JOptionPane.ERROR_MESSAGE);
+						}
+					}else{				//straight login using existing contributor username
+						if(system.isValidContributor(username, password)){
+							MainMenuForm main = new MainMenuForm();
+							main.setVisible(true);
+							main.setBounds(100, 100, 800, 550);
+						}else{
+							JOptionPane.showMessageDialog(frame, "Wrong ID or password"  ,"Error", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+				}else{
+					if(register!=null && register.registerredUser()>3){
+						if(register.verifyUserReg(username, password)){
+							MainMenuForm main = new MainMenuForm();
+							main.setVisible(true);
+							main.setBounds(100, 100, 800, 550);
+							
+						}else{
+						JOptionPane.showMessageDialog(frame, "Wrong ID or password"  ,"Error", JOptionPane.ERROR_MESSAGE);
+						}
+						register.viewAllUserRegistered();
+					}else{
+						if(system.isValidUser(username, password)){
+							MainMenuForm main = new MainMenuForm();
+							main.setVisible(true);
+							main.setBounds(100, 100, 800, 550);
+						}else{
+							JOptionPane.showMessageDialog(frame, "Wrong ID or password"  ,"Error", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+				}
+				
+			}
+		});
 		btn_login.setFont(new Font("Felix Titling", Font.PLAIN, 11));
 		btn_login.setBounds(150, 195, 89, 23);
 		frame.getContentPane().add(btn_login);
@@ -75,11 +143,13 @@ public class UserLoginForm {
 		JButton btn_register = new JButton("Register");
 		btn_register.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.dispose();
-				new Register();
-				
+				try {
+					register=new Register();
+					register.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			
+			}
 		});
 		btn_register.setFont(new Font("Felix Titling", Font.PLAIN, 11));
 		btn_register.setBounds(321, 214, 89, 23);

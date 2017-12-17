@@ -430,6 +430,7 @@ public class PurchaseProgram extends JFrame implements ActionListener {
 				this.setVisible(false);
 				MainMenuForm menu = new MainMenuForm();
 				menu.setVisible(true);
+				menu.setBounds(100, 100, 800, 550);
 			}
 		}
 

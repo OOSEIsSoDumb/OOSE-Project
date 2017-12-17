@@ -1,8 +1,8 @@
 package Data;
 
 import java.util.ArrayList;
-
 import logic.User;
+import Data.TempUserRecord;
 
 public class DatabaseManager {
 	private TempUserRecord userrecord;
@@ -10,9 +10,9 @@ public class DatabaseManager {
 	private TempMusicRecord music;
 	private TempProgramRecord program;
 
-	private ArrayList<TempUserRecord> userRegister = new ArrayList<TempUserRecord>();
-	private ArrayList<TempContributorRecord> contributorRegister = new ArrayList<TempContributorRecord>();
 	private ArrayList<TempMusicRecord> musicRegister = new ArrayList<TempMusicRecord>();
+	public ArrayList<TempUserRecord> userRegister = new ArrayList<TempUserRecord>();
+	private ArrayList<TempContributorRecord> contributorRegister = new ArrayList<TempContributorRecord>();
 	private ArrayList<TempProgramRecord> programRegister = new ArrayList<TempProgramRecord>();
 
 	public DatabaseManager() {
@@ -25,14 +25,14 @@ public class DatabaseManager {
 		userRegister.add(user2);
 		userRegister.add(user3);
 
-		TempContributorRecord con1 = new TempContributorRecord("kimchi", "kimchi123");
-		TempContributorRecord con2 = new TempContributorRecord("jiayih", "jiayih123");
-		TempContributorRecord con3 = new TempContributorRecord("lam", "lam123");
+		TempContributorRecord con1 = new TempContributorRecord("kimchi", "kimchi123", "Male", "Athelete", "0138359611");
+		TempContributorRecord con2 = new TempContributorRecord("jiayih", "jiayih123", "Male", "FastRunner", "0123456789");
+		TempContributorRecord con3 = new TempContributorRecord("lam", "lam123", "Male", "Footballer", "0198765432");
 		
 		contributorRegister.add(con1);
 		contributorRegister.add(con2);
 		contributorRegister.add(con3);
-		
+
 		TempProgramRecord prog1 = new TempProgramRecord("5x5 Program", "img/5x5.jpg", "Fred", "The five-by-five program is one that is quite popular among those who are looking to gain a high amount of strength and muscle mass.", "RM700", true);
 		TempProgramRecord prog2 = new TempProgramRecord("German Volume Training", "img/GVT.jpg", "Ryan", "The design of this program is to focus on two main muscle groups per day, alternating between them over the course of three days a week.", "RM900", true);
 		TempProgramRecord prog3 = new TempProgramRecord("FST-7 Training", "img/FST.jpg", "Kimchi", "It is primarily responsible for helping to maintain the structural integrity of the body, provide support and protection.", "RM500", true);
@@ -47,18 +47,23 @@ public class DatabaseManager {
 	}
 
 	public boolean verifyUser(String username, String pwd) {
-		if (userrecord.getUsername().equals(username) && userrecord.getPassword().equals(pwd))
-			return true;
-		else {
-			return false;
+		for (TempUserRecord user: userRegister) {
+			if (user.getUsername().equals(username) && user.getPassword().equals(pwd)){
+				System.out.println("true");
+				return true;
+			}
 		}
+		return false;
+		
 	}
-
+	
 	public boolean verifyContributor(String username, String password) {
-		if (contributor.getUsername().equals(username) && contributor.getPassword().equals(password)) {
-			return true;
-		} else
-			return false;
+		for (TempContributorRecord contributor: contributorRegister) {
+			if (contributor.getUsername().equals(username) && contributor.getPassword().equals(password)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public TempUserRecord getUser(String username, String password) {
@@ -68,6 +73,12 @@ public class DatabaseManager {
 		}
 
 		return null;
+	}
+	public ArrayList<TempUserRecord> getUserList(){
+		return userRegister;
+	}
+	public ArrayList<TempContributorRecord> getContList(){
+		return contributorRegister;
 	}
 
 	public TempContributorRecord getContributor(String username, String password) {
@@ -98,6 +109,10 @@ public class DatabaseManager {
 	public void insertUser(String username, String password) {
 		TempUserRecord user = new TempUserRecord(username, password);
 		userRegister.add(user);
+	}
+	public void insertContributor(String username, String password, String gender, String pro, String contact) {
+		TempContributorRecord cont = new TempContributorRecord(username, password, gender, pro, contact);
+		contributorRegister.add(cont);
 	}
 	
 	public void viewAllUsers() {
