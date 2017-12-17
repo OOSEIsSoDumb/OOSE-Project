@@ -1,8 +1,8 @@
 package Data;
 
 import java.util.ArrayList;
-
 import logic.User;
+import Data.TempUserRecord;
 
 public class DatabaseManager {
 	private TempUserRecord userrecord;
@@ -10,9 +10,9 @@ public class DatabaseManager {
 	private TempMusicRecord music;
 	private TempProgramRecord program;
 
+	private ArrayList<TempMusicRecord> musicRegister = new ArrayList<TempMusicRecord>();
 	private ArrayList<TempUserRecord> userRegister = new ArrayList<TempUserRecord>();
 	private ArrayList<TempContributorRecord> contributorRegister = new ArrayList<TempContributorRecord>();
-	private ArrayList<TempMusicRecord> musicRegister = new ArrayList<TempMusicRecord>();
 	private ArrayList<TempProgramRecord> programRegister = new ArrayList<TempProgramRecord>();
 
 	public DatabaseManager() {
@@ -32,7 +32,7 @@ public class DatabaseManager {
 		contributorRegister.add(con1);
 		contributorRegister.add(con2);
 		contributorRegister.add(con3);
-		
+
 		TempProgramRecord prog1 = new TempProgramRecord("The 5x5 Program", "img/5x5.jpg", "Fred", "The five-by-five program is one that is quite popular among those who are looking to gain a high amount of strength and muscle mass.", "RM700", true);
 		TempProgramRecord prog2 = new TempProgramRecord("German Volume Training", "img/GVT.jpg", "Ryan", "The design of this program is to focus on two main muscle groups per day, alternating between them over the course of three days a week.", "RM900", true);
 		
@@ -41,13 +41,14 @@ public class DatabaseManager {
 	}
 
 	public boolean verifyUser(String username, String pwd) {
-		if (userrecord.getUsername().equals(username) && userrecord.getPassword().equals(pwd))
-			return true;
-		else {
-			return false;
+		for (TempUserRecord user: userRegister) {
+			if (user.getUsername().equals(username) && user.getPassword().equals(pwd))
+				return true;
 		}
+		return false;
+		
 	}
-
+	
 	public boolean verifyContributor(String username, String password) {
 		if (contributor.getUsername().equals(username) && contributor.getPassword().equals(password)) {
 			return true;

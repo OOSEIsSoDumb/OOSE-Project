@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
 
 public class Workout {
 
-	private JFrame frame;
+	JFrame frame;
 
 	/**
 	 * Launch the application.
