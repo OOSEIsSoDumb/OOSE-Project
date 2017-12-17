@@ -2,12 +2,18 @@ package Data;
 
 import java.util.ArrayList;
 
+import logic.User;
+
 public class DatabaseManager {
 	private TempUserRecord userrecord;
 	private TempContributorRecord contributor;
+	private TempMusicRecord music;
+	private TempProgramRecord program;
 
 	private ArrayList<TempUserRecord> userRegister = new ArrayList<TempUserRecord>();
 	private ArrayList<TempContributorRecord> contributorRegister = new ArrayList<TempContributorRecord>();
+	private ArrayList<TempMusicRecord> musicRegister = new ArrayList<TempMusicRecord>();
+	private ArrayList<TempProgramRecord> programRegister = new ArrayList<TempProgramRecord>();
 
 	public DatabaseManager() {
 
@@ -26,6 +32,12 @@ public class DatabaseManager {
 		contributorRegister.add(con1);
 		contributorRegister.add(con2);
 		contributorRegister.add(con3);
+		
+		TempProgramRecord prog1 = new TempProgramRecord("The 5x5 Program", "img/5x5.jpg", "Fred", "The five-by-five program is one that is quite popular among those who are looking to gain a high amount of strength and muscle mass.", "RM700", true);
+		TempProgramRecord prog2 = new TempProgramRecord("German Volume Training", "img/GVT.jpg", "Ryan", "The design of this program is to focus on two main muscle groups per day, alternating between them over the course of three days a week.", "RM900", true);
+		
+		programRegister.add(prog1);
+		programRegister.add(prog2);
 	}
 
 	public boolean verifyUser(String username, String pwd) {
@@ -67,6 +79,28 @@ public class DatabaseManager {
 
 	public ArrayList<TempContributorRecord> getContributorRegister() {
 		return contributorRegister;
+	}
+
+	public ArrayList<TempMusicRecord> getMusic() {
+		return musicRegister;
+	}
+
+	public ArrayList<TempProgramRecord> getProgram() {
+		return programRegister;
+	}
+	
+	public void insertUser(String username, String password) {
+		TempUserRecord user = new TempUserRecord(username, password);
+		userRegister.add(user);
+	}
+	
+	public void viewAllUsers() {
+		ArrayList<User> userlist = new ArrayList<User>();
+
+		for (TempUserRecord tempuser : userRegister) {
+			System.out.println(tempuser.getUsername());
+			
+		}
 	}
 
 }

@@ -75,13 +75,11 @@ public class UserLoginForm {
 		JButton btn_register = new JButton("Register");
 		btn_register.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					OOSE2 window = new OOSE2();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
+				frame.dispose();
+				new Register();
+				
 				}
-			}
+			
 		});
 		btn_register.setFont(new Font("Felix Titling", Font.PLAIN, 11));
 		btn_register.setBounds(321, 214, 89, 23);
