@@ -22,77 +22,64 @@ import java.awt.event.ActionEvent;
 
 public class MainMenuForm extends JFrame implements ActionListener {
 	DatabaseManager db = new DatabaseManager();
-	private MainSystem system = new MainSystem("Break A Sweat");
 	JButton btn_purchase;
 	JButton btn_logout;
-	JButton btn_myprogram;
-	JButton btn_music;
-	JButton btn_bmi;
-	JButton btn_workout;
-	/**
-	 * Launch the application.
-	 */
+	private MainSystem system = new MainSystem("Break a Sweat");
+	
 	public static void main(String[] args) {
 		MainMenuForm frame = new MainMenuForm();
-		frame.getContentPane().setBackground(new Color(240, 240, 240));
-		frame.setTitle("Main Menu");
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 785, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setTitle("Main Screen");
+		frame.setSize(1366, 768);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 
-	/**
-	 * Create the application.
-	 */
+
 	public MainMenuForm() {
 		Container pane = getContentPane();
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Main Menu");
+		setSize(1366, 725);
+		setLocationRelativeTo(null);
+		setVisible(true);
 		
 		JLabel lbl_features = new JLabel("Welcome");
 		lbl_features.setFont(new Font("Stencil", Font.BOLD, 12));
 		lbl_features.setBounds(10, 63, 114, 32);
 		pane.add(lbl_features);
 
-		btn_bmi = new JButton("BMI");
+		JButton btn_bmi = new JButton("BMI");
 		btn_bmi.setFont(new Font("Stencil", Font.BOLD, 18));
 		btn_bmi.setBounds(5, 106, 89, 38);
 		pane.add(btn_bmi);
-		btn_bmi.addActionListener(this);
-		
+
 		btn_purchase = new JButton("Purchase");
 		btn_purchase.setFont(new Font("Stencil", Font.BOLD, 18));
 		btn_purchase.setBounds(5, 166, 137, 38);
 		pane.add(btn_purchase);
 		btn_purchase.addActionListener(this);
 
-		btn_music = new JButton("Music");
+		JButton btn_music = new JButton("Music");
 		btn_music.setFont(new Font("Stencil", Font.BOLD, 18));
 		btn_music.setBounds(5, 226, 114, 38);
 		pane.add(btn_music);
-		btn_music.addActionListener(this);
 
-		btn_myprogram = new JButton("My Programs");
+		JButton btn_myprogram = new JButton("My Programs");
 		btn_myprogram.setFont(new Font("Stencil", Font.BOLD, 18));
 		btn_myprogram.setBounds(5, 286, 175, 38);
 		pane.add(btn_myprogram);
-		btn_myprogram.addActionListener(this);
-		
-		btn_workout = new JButton("Workout");
-		btn_workout.setFont(new Font("Stencil", Font.BOLD, 18));
-		btn_workout.setBounds(5, 346, 175, 38);
-		pane.add(btn_workout);
-		btn_workout.addActionListener(this);
-		
+
 		btn_logout = new JButton("Logout");
 		btn_logout.addActionListener(this);
+
 		btn_logout.setBackground(Color.LIGHT_GRAY);
 		btn_logout.setForeground(Color.BLACK);
 		btn_logout.setFont(new Font("Stencil", Font.BOLD, 18));
-		btn_logout.setBounds(5, 406, 114, 38);
+		btn_logout.setBounds(5, 346, 114, 38);
 		pane.add(btn_logout);
 
-		
 		JLabel lbl_mainmenu = new JLabel("Main Menu");
 		lbl_mainmenu.setFont(new Font("Bernard MT Condensed", Font.PLAIN, 26));
 		lbl_mainmenu.setBounds(343, 11, 114, 32);
@@ -143,25 +130,12 @@ public class MainMenuForm extends JFrame implements ActionListener {
 		} else if (obj == btn_logout) {
 			this.dispose();
 			try {
-				new UserLoginForm().frame.setVisible(true);
+				UserLoginForm window = new UserLoginForm();
+				window.frame.setVisible(true);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 
-		} else if (obj == btn_music){
-			this.setVisible(false);
-			new Music().frame.setVisible(true);
-		} else if (obj == btn_myprogram){
-			this.setVisible(false);
-			new MyPrograms().frame.setVisible(true);
-		} else if (obj == btn_bmi){
-			this.setVisible(false);
-			BMICalculatorInputData bmi = new BMICalculatorInputData();
-			bmi.setBounds(100, 100, 400, 400);
-			bmi.setVisible(true);
-		} else if (obj == btn_workout){
-			this.setVisible(false);
-			new Workout().frame.setVisible(true);
 		}
 	}
 }

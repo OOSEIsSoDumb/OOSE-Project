@@ -15,7 +15,7 @@ import javax.swing.JSeparator;
 
 public class Music {
 
-	JFrame frame;
+	private JFrame frame;
 
 	/**
 	 * Launch the application.
@@ -131,17 +131,17 @@ public class Music {
 		frame.getContentPane().add(btnImport);
 		
 		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon("C:\\Users\\Awesomekllr\\Desktop\\button_play_blue.png"));
+		label.setIcon(new ImageIcon("img/button_play_blue.png"));
 		label.setBounds(519, 497, 53, 76);
 		frame.getContentPane().add(label);
 		
 		JLabel label_1 = new JLabel("");
-		label_1.setIcon(new ImageIcon("C:\\Users\\Awesomekllr\\Desktop\\icon-next.gif"));
+		label_1.setIcon(new ImageIcon("img/icon-next.gif"));
 		label_1.setBounds(582, 497, 53, 76);
 		frame.getContentPane().add(label_1);
 		
 		JLabel label_2 = new JLabel("");
-		label_2.setIcon(new ImageIcon("C:\\Users\\Awesomekllr\\Desktop\\icon-prev.gif"));
+		label_2.setIcon(new ImageIcon("img/icon-prev.gif"));
 		label_2.setBounds(456, 497, 53, 76);
 		frame.getContentPane().add(label_2);
 	}

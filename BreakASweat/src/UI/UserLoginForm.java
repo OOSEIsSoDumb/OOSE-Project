@@ -2,9 +2,7 @@ package UI;
 
 import java.awt.EventQueue;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -15,22 +13,16 @@ import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
-import Data.DatabaseManager;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.Arrays;
 
-import logic.MainSystem;
-
-import javax.swing.*;
 
 public class UserLoginForm {
 
 	JFrame frame;
 	private JTextField txt_username;
 	private JPasswordField pf_loginpassword;
-	MainSystem system = new MainSystem("Workout");
+
 	/**
 	 * Launch the application.
 	 */
@@ -71,31 +63,6 @@ public class UserLoginForm {
 		txt_username.setColumns(10);
 		
 		JButton btn_login = new JButton("Login");
-		btn_login.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//char[] inputpassword = db.getUserPassword(txt_username.getText());
-				//if(db.verifyLogin(txt_username.getText(), inputpassword)){
-				//	MainMenu main = new MainMenu();
-				//	main.frame.setVisible(true);
-				//}
-				//else{
-				//	JOptionPane op = new JOptionPane("Your password or username was incorrect");
-				//	op.setVisible(true);
-				//}
-				String username= txt_username.getText();
-				String password = pf_loginpassword.getText();
-				
-				if(system.isValidUser(username, password)){
-					MainMenuForm main = new MainMenuForm();
-					main.setVisible(true);
-					main.setBounds(100, 100, 400, 400);
-				}
-				else{
-					JOptionPane.showMessageDialog(frame, "Wrong ID or password"  ,"Error", JOptionPane.ERROR_MESSAGE);
-				}
-				
-			}
-		});
 		btn_login.setFont(new Font("Felix Titling", Font.PLAIN, 11));
 		btn_login.setBounds(150, 195, 89, 23);
 		frame.getContentPane().add(btn_login);
@@ -108,13 +75,11 @@ public class UserLoginForm {
 		JButton btn_register = new JButton("Register");
 		btn_register.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					Register reg=new Register();
-					reg.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
+				frame.dispose();
+				new Register();
+				
 				}
-			}
+			
 		});
 		btn_register.setFont(new Font("Felix Titling", Font.PLAIN, 11));
 		btn_register.setBounds(321, 214, 89, 23);
