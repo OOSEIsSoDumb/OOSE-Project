@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.awt.Font;
 
@@ -11,7 +12,11 @@ import javax.swing.JButton;
 import javax.swing.JTextArea;
 
 import Data.DatabaseManager;
+import Data.TempContributorRecord;
+import Data.TempUserRecord;
+import logic.Contributor;
 import logic.MainSystem;
+import logic.User;
 
 import javax.swing.ImageIcon;
 
@@ -29,27 +34,27 @@ public class MainMenuForm extends JFrame implements ActionListener {
 	JButton btn_music;
 	JButton btn_bmi;
 	JButton btn_workout;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		MainMenuForm frame = new MainMenuForm();
-		frame.getContentPane().setBackground(new Color(240, 240, 240));
-		frame.setTitle("Main Menu");
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 785, 500);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-	}
+	UserLoginForm userlogin;
+	TempContributorRecord contributor1;
+	TempUserRecord user1;
 
 	/**
 	 * Create the application.
 	 */
-	public MainMenuForm() {
+	public MainMenuForm(UserLoginForm login) {
+		this.userlogin=login;
+		if(userlogin.contributorIsSelected()){
+			contributor1 = userlogin.contributor;
+			user1=null;
+			System.out.println("user is not null got value retrieved!");
+		}else{
+			user1 = userlogin.user; 
+			contributor1=null;
+			System.out.println("user is not null got value retrieved!");
+		}
 		Container pane = getContentPane();
 		
-		JLabel lbl_features = new JLabel("Welcome");
+		JLabel lbl_features = new JLabel("Welcome "+ userlogin.txt_username.getText());
 		lbl_features.setFont(new Font("Stencil", Font.BOLD, 12));
 		lbl_features.setBounds(10, 63, 114, 32);
 		pane.add(lbl_features);
@@ -129,6 +134,14 @@ public class MainMenuForm extends JFrame implements ActionListener {
 		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\USER\\Desktop\\2.jpg"));
 		lblNewLabel_1.setBounds(202, 240, 294, 210);
 		pane.add(lblNewLabel_1);
+		
+		JOptionPane.showMessageDialog(this, "Use Promo Code BREAK to get RM5 off your Purchase");
+	}
+	public boolean checkIsContributor(){
+		if(userlogin.contributorIsSelected()){
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -143,25 +156,38 @@ public class MainMenuForm extends JFrame implements ActionListener {
 		} else if (obj == btn_logout) {
 			this.dispose();
 			try {
-				new UserLoginForm().frame.setVisible(true);
+				userlogin.frame.setVisible(true);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 
 		} else if (obj == btn_music){
 			this.setVisible(false);
-			new Music().frame.setVisible(true);
+			Music music = new Music();
+			music.frame.setSize(1110, 623);
+			music.frame.setLocationRelativeTo(null);
+			music.frame.setVisible(true);
+			
 		} else if (obj == btn_myprogram){
 			this.setVisible(false);
-			new MyPrograms().frame.setVisible(true);
+			MyPrograms mprog = new MyPrograms(this);
+			mprog.frame.setSize(1104, 743);
+			mprog.frame.setLocationRelativeTo(null);
+			mprog.frame.setVisible(true);
+			
 		} else if (obj == btn_bmi){
 			this.setVisible(false);
-			BMICalculatorInputData bmi = new BMICalculatorInputData();
-			bmi.setBounds(100, 100, 400, 400);
+			BMICalculatorInputData bmi = new BMICalculatorInputData(this,system);
+			bmi.setSize(800, 400);
+			bmi.setLocationRelativeTo(null);
 			bmi.setVisible(true);
+			
 		} else if (obj == btn_workout){
 			this.setVisible(false);
-			new Workout().frame.setVisible(true);
+			Workout wk = new Workout();
+			wk.frame.setSize(1110, 623);
+			wk.frame.setLocationRelativeTo(null);
+			wk.frame.setVisible(true);
 		}
 	}
 }

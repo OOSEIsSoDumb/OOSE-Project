@@ -25,46 +25,52 @@ import javax.swing.JScrollBar;
 import java.awt.Component;
 
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JList;
 import javax.swing.border.LineBorder;
+
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 
+import java.awt.Insets;
+import java.util.ArrayList;
 
-public class MyPrograms {
+import javax.swing.JTextArea;
+
+import logic.Programs;
+import Data.DatabaseManager;
+import Data.TempProgramRecord;
+
+public class MyPrograms extends JFrame implements ActionListener{
 
 	JFrame frame;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MyPrograms window = new MyPrograms();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	JList list;
+	JLabel lbl_programName;
+	JLabel lbl_author;
+	JLabel lbl_price;
+	JLabel lbl_pictures;
+	JTextArea txt_description;
+	JPanel content;
+	JLabel lbl_guide;
+	DatabaseManager db= new DatabaseManager();
+	MainMenuForm mainmenu;
+	String picture;
+	ArrayList<TempProgramRecord> tempProgram = new ArrayList<TempProgramRecord>();
+	
 	/**
 	 * Create the application.
 	 */
-	public MyPrograms() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
+	public MyPrograms(MainMenuForm main) {
+		this.mainmenu=main;
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1104, 743);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,6 +81,10 @@ public class MyPrograms {
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		JButton btn_back = new JButton("Back");
+		btn_back.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btn_back.setMargin(new Insets(2, 8, 2, 8));
+		btn_back.setMaximumSize(new Dimension(70, 25));
+		btn_back.setMinimumSize(new Dimension(70, 25));
 		btn_back.setPreferredSize(new Dimension(59, 30));
 		btn_back.setHorizontalAlignment(SwingConstants.LEFT);
 		panel.add(btn_back, BorderLayout.WEST);
@@ -99,14 +109,44 @@ public class MyPrograms {
 		panel_1.add(program_sub_title, BorderLayout.NORTH);
 		
 		DefaultListModel itemlist= new DefaultListModel();
-		for (int i=1;i<=30;i++){
-			itemlist.addElement("The Complete 4-Week Beginner's Workout Program" + i);
+		tempProgram = db.getProgram();
+
+		for(TempProgramRecord program: tempProgram){
+			itemlist.addElement(program.getTitle());
 		}
 		
-		
-		JList list = new JList();
+		list = new JList(itemlist);
 		list.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		list.setModel(itemlist);
+		MouseListener mouseListener = new MouseAdapter() {
+			 public void mouseClicked(MouseEvent e) {
+				 if (e.getClickCount() == 2) {
+					 
+					 String selectedItem = (String) list.getSelectedValue();
+					 //tempProgram = db.getProgram();
+					 
+					 for(TempProgramRecord program : tempProgram){
+						 if(program.getTitle().equals(selectedItem)){
+							 lbl_programName.setText("Program: "+ selectedItem);
+							 lbl_price.setText("Price: "+ program.getPrice());
+							 ImageIcon icon = new ImageIcon(program.getPictures());
+							 lbl_pictures.setIcon(icon);
+							 lbl_pictures.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+							 lbl_pictures.setAlignmentY(JLabel.CENTER_ALIGNMENT);
+							 lbl_author.setText("Author: "+ program.getAuthors());
+							 txt_description.setText(program.getDetails());
+							
+						 }
+					 }
+					 lbl_programName.setVisible(true);
+					 txt_description.setVisible(true);
+					 lbl_price.setVisible(true);
+					 lbl_pictures.setVisible(true);
+					 lbl_author.setVisible(true);
+					 lbl_guide.setVisible(false);
+				 }
+			 }
+		};
+		list.addMouseListener(mouseListener);
 		
 		JScrollPane scrollPane = new JScrollPane(list);
 		scrollPane.setBorder(new MatteBorder(1, 1, 1, 2, (Color) new Color(0, 0, 0)));
@@ -120,8 +160,13 @@ public class MyPrograms {
 		panel_1.add(panel_2, BorderLayout.SOUTH);
 		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
+		
 		JButton btnAddYourProgram = new JButton("Add Your Program");
-		panel_2.add(btnAddYourProgram);
+		btnAddYourProgram.addActionListener(this);
+		if(mainmenu.checkIsContributor()){
+			panel_2.add(btnAddYourProgram);
+		}
+		
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new MatteBorder(1, 0, 0, 1, (Color) new Color(0, 0, 0)));
@@ -143,9 +188,55 @@ public class MyPrograms {
 		JButton btnJoinNow = new JButton("Join Now");
 		panel_5.add(btnJoinNow);
 		
-		JPanel content = new JPanel();
+		/*
+		 * Preview part
+		 */
+		
+		content = new JPanel();
 		content.setBorder(new MatteBorder(1, 0, 1, 1, (Color) new Color(0, 0, 0)));
 		panel_3.add(content, BorderLayout.CENTER);
+		content.setLayout(null);
+		
+		lbl_programName = new JLabel("Program:");
+		lbl_programName.setBounds(39, 329, 598, 16);
+		content.add(lbl_programName);
+		lbl_programName.setVisible(false);
+		
+		lbl_author = new JLabel("Author:");
+		lbl_author.setBounds(39, 362, 598, 16);
+		content.add(lbl_author);
+		lbl_author.setVisible(false);
+		
+		txt_description = new JTextArea();
+		txt_description.setEditable(false);
+		txt_description.setLineWrap(true);
+		txt_description.setBounds(39, 415, 598, 170);
+		content.add(txt_description);
+		txt_description.setVisible(false);
+		
+		lbl_price = new JLabel("Price:");
+		lbl_price.setBounds(39, 386, 598, 16);
+		content.add(lbl_price);
+		lbl_price.setVisible(false);
+		
+		lbl_pictures = new JLabel();
+		lbl_pictures.setBounds(227, 13, 614, 290);
+		content.add(lbl_pictures);
+		
+		lbl_guide = new JLabel("Double Click Programs to show The Preview");
+		lbl_guide.setBounds(200, 264, 598, 16);
+		content.add(lbl_guide);
+		lbl_guide.setVisible(true);
+				
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Object obj = e.getSource();
+		
+		//if(obj = btn_){
+			
+		//}
+	}
 }

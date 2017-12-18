@@ -49,7 +49,6 @@ public class DatabaseManager {
 	public boolean verifyUser(String username, String pwd) {
 		for (TempUserRecord user: userRegister) {
 			if (user.getUsername().equals(username) && user.getPassword().equals(pwd)){
-				System.out.println("true");
 				return true;
 			}
 		}

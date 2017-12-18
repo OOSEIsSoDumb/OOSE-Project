@@ -46,9 +46,6 @@ public class Register {
 	private MainMenuForm nextScreen;
 	private JCheckBox cb_contributor;
 	private JComboBox cb_gender;
-	/**
-	 * Launch the application.
-	 */
 	
 	/**
 	 * Create the application.
@@ -63,7 +60,6 @@ public class Register {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lbl_title = new JLabel("Register Account");
@@ -204,7 +200,7 @@ public class Register {
 						txt_profession.setVisible(true);
 						txt_contactNo.setVisible(true);
 						btnRegister.setBounds(217, 370, 89, 23);
-						frame.setBounds(100, 100, 450, 474);
+						frame.setSize(450, 474);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -217,7 +213,7 @@ public class Register {
 					txt_profession.setVisible(false);
 					txt_contactNo.setVisible(false);
 					btnRegister.setBounds(217, 203, 89, 23);
-					frame.setBounds(100, 100, 450, 300);
+					frame.setSize(450, 300);
 				}
 			}
 		});
@@ -256,5 +252,23 @@ public class Register {
 			}
 		}
 		return false;
+	}
+	public TempUserRecord getVerifiedUser(String username, String pwd){
+		ArrayList<TempUserRecord> userRegister = getAllUser();
+		for (TempUserRecord user: userRegister) {
+			if (user.getUsername().equals(username) && user.getPassword().equals(pwd)){
+				return user;
+			}
+		}
+		return null;
+	}
+	public TempContributorRecord getVerifiedContributor(String username, String pwd){
+		ArrayList<TempContributorRecord> contRegister = getAllContributor();
+		for(TempContributorRecord cont : contRegister){
+			if (cont.getUsername().equals(username) && cont.getPassword().equals(pwd)){
+				return cont;
+			}
+		}
+		return null;
 	}
 }

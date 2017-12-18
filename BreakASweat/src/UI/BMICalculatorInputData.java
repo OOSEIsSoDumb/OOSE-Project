@@ -7,6 +7,9 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import logic.MainSystem;
+
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,24 +29,21 @@ public class BMICalculatorInputData extends JFrame implements ActionListener, It
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
-	
+	private MainMenuForm prevScreen;
 	private String gender = "Male";
+	private JButton btnBack;
 	private int random;
 
-	public static void main(String[] args) {
-		BMICalculatorInputData frame = new BMICalculatorInputData();
-		frame.getContentPane().setBackground(new Color(240, 240, 240));
-		frame.setTitle("BMI Calculator");
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 785, 390);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-	}
-
-	public BMICalculatorInputData() {
+	public BMICalculatorInputData(MainMenuForm prevScreen , MainSystem system) {
 	
+		this.prevScreen = prevScreen;
 		
+		setTitle("BMI Calculator");
+		setResizable(false);
+		setSize(785, 390);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		setVisible(true);
 		Container pane = getContentPane();
 		pane.setLayout(null);
 		
@@ -132,6 +132,11 @@ public class BMICalculatorInputData extends JFrame implements ActionListener, It
 		JLabel image = new JLabel(icon);
 		panel.add(image);
 		
+		btnBack = new JButton("Back");
+		btnBack.setBounds(10, 11, 89, 23);
+		getContentPane().add(btnBack);
+		btnBack.addActionListener(this);
+		
 	}
 	
 	@Override
@@ -155,6 +160,11 @@ public class BMICalculatorInputData extends JFrame implements ActionListener, It
 				JOptionPane.showMessageDialog(this, "Please key in all text fields.");
 			}
 			
+		}
+		
+		if(o == btnBack) {
+			this.setVisible(false);
+			prevScreen.setVisible(true);
 		}
 		
 	}

@@ -33,36 +33,18 @@ import java.awt.event.ActionEvent;
 
 public class PurchaseProgram extends JFrame implements ActionListener {
 
-	JFrame frame;
-	private JTextField txt_name;
-	private JTextField txt_address;
-	private JTextField txt_postcode;
-	private JTextField txt_tel;
-	private JTextField txt_email;
-	private JTextField txt_promo;
-	private JTextField txt_discounts;
-	private JTextField txt_subtotal;
-	private JTextField txt_grandtotal;
-	private JComboBox comboBox_membership;
-	private JTextArea textArea_receipt;
-	private ArrayList<Programs> programsList;
-	private JLabel lbl_membership, lbl_promo;
+	JTextField txt_name, txt_address, txt_postcode, txt_tel, txt_email, txt_promo;
+	JTextField txt_discounts, txt_subtotal, txt_grandtotal;
+	JComboBox comboBox_membership;
+	JTextArea textArea_receipt;
+	ArrayList<Programs> programsList;
+	JLabel lbl_membership, lbl_promo;
+	MainMenuForm prevScreen;
+	JCheckBox chckbx_1, chckbx_2, chckbx_4, chckbx_5, chckbx_6;
+	JButton btn_Exit, btn_reset, btn_Receipt, btn_Total, btn_apply;
+	JTextField txt_1, txt_2, txt_3, txt_4, txt_5, txt_RM5, txt_RM20;
+	JLabel lblOff, lblRm, label_1, label_2;
 	JButton[] btnMoreDetails;
-	private MainMenuForm prevScreen;
-	private JCheckBox chckbx_1, chckbx_2, chckbx_4, chckbx_5, chckbx_6;
-	private JButton btn_Exit, btn_reset, btn_Receipt, btn_Total, button_6;
-	private JButton btn_apply;
-	private JTextField txt_1;
-	private JTextField txt_2;
-	private JTextField txt_3;
-	private JTextField txt_4;
-	private JTextField txt_5;
-	private JTextField txt_RM5;
-	private JTextField txt_RM20;
-	private JLabel lblOff;
-	private JLabel lblRm;
-	private JLabel label_1;
-	private JLabel label_2;
 
 	public PurchaseProgram(MainMenuForm prevScreen, MainSystem system) {
 
@@ -89,7 +71,7 @@ public class PurchaseProgram extends JFrame implements ActionListener {
 		programsList = system.getAllProgram();
 		btnMoreDetails = new JButton[programsList.size()];
 
-		System.out.println(programsList.size());
+		//System.out.println(programsList.size());
 
 		JPanel btn_programs = new JPanel();
 		btn_programs.setBounds(37, 17, 351, 270);
@@ -320,28 +302,27 @@ public class PurchaseProgram extends JFrame implements ActionListener {
 		pane.add(panel_7);
 		panel_7.setLayout(null);
 
-		button_6 = new JButton("");
-		button_6.setBounds(554, 11, 167, 64);
-		panel_7.add(button_6);
-		button_6.addActionListener(this);
-
 		btn_Exit = new JButton("Exit");
-		btn_Exit.setBounds(731, 11, 167, 64);
+		btn_Exit.setFont(new Font("Tahoma", Font.BOLD, 22));
+		btn_Exit.setBounds(634, 11, 264, 64);
 		panel_7.add(btn_Exit);
 		btn_Exit.addActionListener(this);
 
 		btn_reset = new JButton("Reset");
-		btn_reset.setBounds(375, 11, 167, 64);
+		btn_reset.setFont(new Font("Tahoma", Font.BOLD, 22));
+		btn_reset.setBounds(457, 11, 167, 64);
 		panel_7.add(btn_reset);
 		btn_reset.addActionListener(this);
 
 		btn_Receipt = new JButton("Receipt");
-		btn_Receipt.setBounds(198, 11, 167, 64);
+		btn_Receipt.setFont(new Font("Tahoma", Font.BOLD, 22));
+		btn_Receipt.setBounds(280, 11, 167, 64);
 		panel_7.add(btn_Receipt);
 		btn_Receipt.addActionListener(this);
 
 		btn_Total = new JButton("Total");
-		btn_Total.setBounds(21, 11, 167, 64);
+		btn_Total.setFont(new Font("Tahoma", Font.BOLD, 22));
+		btn_Total.setBounds(21, 11, 249, 64);
 		panel_7.add(btn_Total);
 		btn_Total.addActionListener(this);
 
@@ -424,13 +405,19 @@ public class PurchaseProgram extends JFrame implements ActionListener {
 		Object obj = e.getSource();
 
 		if (obj == btn_Exit) {
-			frame = new JFrame("Exit");
-			if (JOptionPane.showConfirmDialog(frame, "Confirm if you want to Exit?", "Purchase Page",
+			if (JOptionPane.showConfirmDialog(this, "Confirm if you want to Exit to the Main Menu?", "Purchase Page",
 					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_NO_OPTION) {
 				this.setVisible(false);
-				MainMenuForm menu = new MainMenuForm();
-				menu.setVisible(true);
-				menu.setBounds(100, 100, 800, 550);
+				prevScreen.setVisible(true);
+			}
+		} else {
+			for (int i = 0; i < btnMoreDetails.length; i++) {
+				if (obj == btnMoreDetails[i]) {
+					Programs program = programsList.get(i);
+
+					this.setVisible(false);
+					new ViewAllProgramsScreen(this, program);
+				}
 			}
 		}
 
@@ -513,43 +500,46 @@ public class PurchaseProgram extends JFrame implements ActionListener {
 		}
 
 		if (obj == btn_Total) {
-			if (chckbx_1.isSelected() == false && chckbx_2.isSelected() == false && chckbx_6.isSelected() == false
-					&& chckbx_4.isSelected() == false && chckbx_5.isSelected() == false) {
-				JOptionPane.showMessageDialog(this, "Please Select a Program to Purchase", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
+			if (JOptionPane.showConfirmDialog(this, "Confirm if you want to Purchase?", "Purchase",
+					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_NO_OPTION) {
+				if (chckbx_1.isSelected() == false && chckbx_2.isSelected() == false && chckbx_6.isSelected() == false
+						&& chckbx_4.isSelected() == false && chckbx_5.isSelected() == false) {
+					JOptionPane.showMessageDialog(this, "Please Select a Program to Purchase", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
 
-			if (comboBox_membership.getSelectedItem().equals("Select") || txt_name.equals(null)
-					|| txt_address.equals(null) || txt_email.equals(null) || txt_tel.equals(null)
-					|| txt_postcode.equals(null)) {
+				if (comboBox_membership.getSelectedItem().equals("Select") || txt_name.equals(null)
+						|| txt_address.equals(null) || txt_email.equals(null) || txt_tel.equals(null)
+						|| txt_postcode.equals(null)) {
 
-				JOptionPane.showMessageDialog(this, "Please Select or Enter Required Fields", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			} else {
-				double[] TotalCost = new double[20];
+					JOptionPane.showMessageDialog(this, "Please Select or Enter Required Fields", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					double[] TotalCost = new double[20];
 
-				TotalCost[0] = 0;
-				TotalCost[1] = Double.parseDouble(txt_1.getText());
-				TotalCost[2] = Double.parseDouble(txt_2.getText());
-				TotalCost[3] = Double.parseDouble(txt_3.getText());
-				TotalCost[4] = Double.parseDouble(txt_4.getText());
-				TotalCost[5] = Double.parseDouble(txt_5.getText());
-				TotalCost[6] = Double.parseDouble(txt_RM20.getText());
-				TotalCost[7] = Double.parseDouble(txt_RM5.getText());
+					TotalCost[0] = 0;
+					TotalCost[1] = Double.parseDouble(txt_1.getText());
+					TotalCost[2] = Double.parseDouble(txt_2.getText());
+					TotalCost[3] = Double.parseDouble(txt_3.getText());
+					TotalCost[4] = Double.parseDouble(txt_4.getText());
+					TotalCost[5] = Double.parseDouble(txt_5.getText());
+					TotalCost[6] = Double.parseDouble(txt_RM20.getText());
+					TotalCost[7] = Double.parseDouble(txt_RM5.getText());
 
-				// Total Cost
-				TotalCost[8] = TotalCost[1] + TotalCost[2] + TotalCost[3] + TotalCost[4] + TotalCost[5];
-				// Total Discounts
-				TotalCost[9] = TotalCost[6] + TotalCost[7];
-				// Total Cost After Discount
-				TotalCost[10] = TotalCost[8] - TotalCost[9];
+					// Total Cost
+					TotalCost[8] = TotalCost[1] + TotalCost[2] + TotalCost[3] + TotalCost[4] + TotalCost[5];
+					// Total Discounts
+					TotalCost[9] = TotalCost[6] + TotalCost[7];
+					// Total Cost After Discount
+					TotalCost[10] = TotalCost[8] - TotalCost[9];
 
-				String subTotal = String.format("RM%.2f ", TotalCost[8]);
-				String discounts = String.format("RM%.2f ", TotalCost[9]);
-				String GrandTotal = String.format("RM%.2f ", TotalCost[10]);
-				txt_subtotal.setText(subTotal);
-				txt_discounts.setText(discounts);
-				txt_grandtotal.setText(GrandTotal);
+					String subTotal = String.format("RM%.2f ", TotalCost[8]);
+					String discounts = String.format("RM%.2f ", TotalCost[9]);
+					String GrandTotal = String.format("RM%.2f ", TotalCost[10]);
+					txt_subtotal.setText(subTotal);
+					txt_discounts.setText(discounts);
+					txt_grandtotal.setText(GrandTotal);
+				}
 			}
 		}
 
@@ -590,6 +580,7 @@ public class PurchaseProgram extends JFrame implements ActionListener {
 						+ "\n\n\tThanks For Shopping With Us \n\t               Break A Sweat");
 
 			}
+
 		}
 	}
 

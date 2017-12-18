@@ -28,6 +28,24 @@ public class MainSystem {
 	public boolean isValidContributor(String username, String password) {
 		return db.verifyContributor(username, password);
 	}
+	public TempUserRecord getVerifiedUser(String username, String pwd){
+		ArrayList<TempUserRecord> userRegister = db.getUserList();
+		for (TempUserRecord user: userRegister) {
+			if (user.getUsername().equals(username) && user.getPassword().equals(pwd)){
+				return user;
+			}
+		}
+		return null;
+	}
+	public TempContributorRecord getVerifiedContributor(String username, String pwd){
+		ArrayList<TempContributorRecord> contRegister = db.getContList();
+		for(TempContributorRecord cont : contRegister){
+			if (cont.getUsername().equals(username) && cont.getPassword().equals(pwd)){
+				return cont;
+			}
+		}
+		return null;
+	}
 
 	public ArrayList<User> getAllUser() {
 		ArrayList<User> userlist = new ArrayList<User>();
