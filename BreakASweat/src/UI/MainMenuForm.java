@@ -16,7 +16,9 @@ import Data.TempContributorRecord;
 import Data.TempUserRecord;
 import logic.Contributor;
 import logic.MainSystem;
+import logic.Music;
 import logic.User;
+import logic.Workouts;
 
 import javax.swing.ImageIcon;
 
@@ -37,6 +39,8 @@ public class MainMenuForm extends JFrame implements ActionListener {
 	UserLoginForm userlogin;
 	TempContributorRecord contributor1;
 	TempUserRecord user1;
+	WorkoutRoutine wk;
+	AudioPlayer music;
 
 	/**
 	 * Create the application.
@@ -46,11 +50,11 @@ public class MainMenuForm extends JFrame implements ActionListener {
 		if(userlogin.contributorIsSelected()){
 			contributor1 = userlogin.contributor;
 			user1=null;
-			System.out.println("user is not null got value retrieved!");
+			//System.out.println("user is not null got value retrieved!");
 		}else{
 			user1 = userlogin.user; 
 			contributor1=null;
-			System.out.println("user is not null got value retrieved!");
+			//System.out.println("user is not null got value retrieved!");
 		}
 		Container pane = getContentPane();
 		
@@ -163,15 +167,19 @@ public class MainMenuForm extends JFrame implements ActionListener {
 
 		} else if (obj == btn_music){
 			this.setVisible(false);
-			Music music = new Music();
-			music.frame.setSize(1110, 623);
-			music.frame.setLocationRelativeTo(null);
-			music.frame.setVisible(true);
+			if(music!=null) {
+				music.setVisible(true);
+			}else {
+				music = new AudioPlayer(this, system );
+				//wk.setSize(1110, 623);
+				music.setLocationRelativeTo(null);
+				music.setVisible(true);
+			}
 			
 		} else if (obj == btn_myprogram){
 			this.setVisible(false);
-			MyPrograms mprog = new MyPrograms(this);
-			mprog.frame.setSize(1104, 743);
+			MyPrograms mprog = new MyPrograms(this,system);
+			//mprog.frame.setSize(1104, 743);
 			mprog.frame.setLocationRelativeTo(null);
 			mprog.frame.setVisible(true);
 			
@@ -184,10 +192,14 @@ public class MainMenuForm extends JFrame implements ActionListener {
 			
 		} else if (obj == btn_workout){
 			this.setVisible(false);
-			Workout wk = new Workout();
-			wk.frame.setSize(1110, 623);
-			wk.frame.setLocationRelativeTo(null);
-			wk.frame.setVisible(true);
+			if(wk!=null) {
+				wk.setVisible(true);
+			}else {
+				wk = new WorkoutRoutine(this, system );
+				//wk.setSize(1110, 623);
+				wk.setLocationRelativeTo(null);
+				wk.setVisible(true);
+			}
 		}
 	}
 }

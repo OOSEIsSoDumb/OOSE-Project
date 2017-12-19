@@ -45,6 +45,7 @@ public class PurchaseProgram extends JFrame implements ActionListener {
 	JTextField txt_1, txt_2, txt_3, txt_4, txt_5, txt_RM5, txt_RM20;
 	JLabel lblOff, lblRm, label_1, label_2;
 	JButton[] btnMoreDetails;
+	private JPanel panel_6;
 
 	public PurchaseProgram(MainMenuForm prevScreen, MainSystem system) {
 
@@ -52,7 +53,7 @@ public class PurchaseProgram extends JFrame implements ActionListener {
 		Container pane = getContentPane();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Purchase Program");
-		setSize(1366, 725);
+		setSize(1389, 725);
 		setLocationRelativeTo(null);
 		setVisible(true);
 
@@ -320,7 +321,7 @@ public class PurchaseProgram extends JFrame implements ActionListener {
 		panel_7.add(btn_Receipt);
 		btn_Receipt.addActionListener(this);
 
-		btn_Total = new JButton("Total");
+		btn_Total = new JButton("Purchase");
 		btn_Total.setFont(new Font("Tahoma", Font.BOLD, 22));
 		btn_Total.setBounds(21, 11, 249, 64);
 		panel_7.add(btn_Total);
@@ -391,12 +392,18 @@ public class PurchaseProgram extends JFrame implements ActionListener {
 		txt_email.setColumns(10);
 		txt_email.setBounds(190, 183, 223, 27);
 		panel.add(txt_email);
-
-		textArea_receipt = new JTextArea();
-		textArea_receipt.setEditable(false);
-		textArea_receipt.setFont(new Font("Dialog", Font.BOLD, 14));
-		textArea_receipt.setBounds(946, 11, 394, 664);
-		panel_8.add(textArea_receipt);
+		
+		panel_6 = new JPanel();
+		panel_6.setBorder(new LineBorder(new Color(0, 0, 0), 5));
+		panel_6.setBounds(933, 11, 419, 664);
+		panel_8.add(panel_6);
+		panel_6.setLayout(null);
+		
+				textArea_receipt = new JTextArea();
+				textArea_receipt.setBounds(15, 11, 394, 637);
+				panel_6.add(textArea_receipt);
+				textArea_receipt.setEditable(false);
+				textArea_receipt.setFont(new Font("Dialog", Font.BOLD, 14));
 
 	}
 

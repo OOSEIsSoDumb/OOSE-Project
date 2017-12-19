@@ -8,7 +8,7 @@ public class TempProgramRecord {
 	private String price;
 	private boolean joined;
 
-	public TempProgramRecord(String title, String pictures, String authors, String details, String price, boolean joined) {
+	public TempProgramRecord(String title, String pictures, String authors, String details, String price) {
 		this.title = title;
 		this.pictures = pictures;
 		this.authors = authors;

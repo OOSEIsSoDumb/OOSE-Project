@@ -26,6 +26,7 @@ import java.awt.Component;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JList;
@@ -46,6 +47,7 @@ import java.util.ArrayList;
 
 import javax.swing.JTextArea;
 
+import logic.MainSystem;
 import logic.Programs;
 import Data.DatabaseManager;
 import Data.TempProgramRecord;
@@ -61,26 +63,30 @@ public class MyPrograms extends JFrame implements ActionListener{
 	JTextArea txt_description;
 	JPanel content;
 	JLabel lbl_guide;
+	JButton btn_back;
+	JButton btnJoinNow;
+	JButton btnAddYourProgram;
 	DatabaseManager db= new DatabaseManager();
 	MainMenuForm mainmenu;
 	String picture;
 	ArrayList<TempProgramRecord> tempProgram = new ArrayList<TempProgramRecord>();
-	
+	MainSystem system;
+	DefaultListModel itemlist;
+	InsertProgram iProgram;
 	/**
 	 * Create the application.
 	 */
-	public MyPrograms(MainMenuForm main) {
+	public MyPrograms(MainMenuForm main,MainSystem system) {
 		this.mainmenu=main;
+		this.system=system;
 		frame = new JFrame();
-		frame.setBounds(100, 100, 1104, 743);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
-		
+		frame.setSize(1104, 743);
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
 		panel.setLayout(new BorderLayout(0, 0));
 		
-		JButton btn_back = new JButton("Back");
+		btn_back = new JButton("Back");
 		btn_back.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn_back.setMargin(new Insets(2, 8, 2, 8));
 		btn_back.setMaximumSize(new Dimension(70, 25));
@@ -88,6 +94,7 @@ public class MyPrograms extends JFrame implements ActionListener{
 		btn_back.setPreferredSize(new Dimension(59, 30));
 		btn_back.setHorizontalAlignment(SwingConstants.LEFT);
 		panel.add(btn_back, BorderLayout.WEST);
+		btn_back.addActionListener(this);
 		
 		JLabel program_title = new JLabel("    My Programs");
 		program_title.setPreferredSize(new Dimension(55, 30));
@@ -108,14 +115,19 @@ public class MyPrograms extends JFrame implements ActionListener{
 		program_sub_title.setFont(new Font("Trajan Pro 3", Font.BOLD, 20));
 		panel_1.add(program_sub_title, BorderLayout.NORTH);
 		
-		DefaultListModel itemlist= new DefaultListModel();
+		itemlist= new DefaultListModel();
 		tempProgram = db.getProgram();
 
 		for(TempProgramRecord program: tempProgram){
 			itemlist.addElement(program.getTitle());
+			
 		}
-		
-		list = new JList(itemlist);
+		if(db.getProgram().size()>5){
+			list = new JList(iProgram.itemlist);
+		}
+		else{
+			list = new JList(itemlist);
+		}
 		list.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		MouseListener mouseListener = new MouseAdapter() {
 			 public void mouseClicked(MouseEvent e) {
@@ -123,6 +135,9 @@ public class MyPrograms extends JFrame implements ActionListener{
 					 
 					 String selectedItem = (String) list.getSelectedValue();
 					 //tempProgram = db.getProgram();
+					 if(tempProgram.size()>5){
+						 tempProgram=iProgram.tempprogram;
+					 }
 					 
 					 for(TempProgramRecord program : tempProgram){
 						 if(program.getTitle().equals(selectedItem)){
@@ -161,7 +176,7 @@ public class MyPrograms extends JFrame implements ActionListener{
 		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		
-		JButton btnAddYourProgram = new JButton("Add Your Program");
+		btnAddYourProgram = new JButton("Add Your Program");
 		btnAddYourProgram.addActionListener(this);
 		if(mainmenu.checkIsContributor()){
 			panel_2.add(btnAddYourProgram);
@@ -185,8 +200,9 @@ public class MyPrograms extends JFrame implements ActionListener{
 		panel_3.add(panel_5, BorderLayout.SOUTH);
 		panel_5.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JButton btnJoinNow = new JButton("Join Now");
+		btnJoinNow = new JButton("Join Now");
 		panel_5.add(btnJoinNow);
+		btnJoinNow.addActionListener(this);
 		
 		/*
 		 * Preview part
@@ -235,8 +251,48 @@ public class MyPrograms extends JFrame implements ActionListener{
 		// TODO Auto-generated method stub
 		Object obj = e.getSource();
 		
-		//if(obj = btn_){
-			
-		//}
+		if(obj == btn_back){
+			mainmenu.setVisible(true);
+			this.frame.setVisible(false);
+		}
+		if(obj == btnJoinNow ){
+			 String selectedItem = (String) list.getSelectedValue();
+			 if (JOptionPane.showConfirmDialog(null, "Are you sure you want to join the Program? YES(proceed to purchase program) NO(continue shopping)", "Hello There",
+				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				 PurchaseProgram purchase= new PurchaseProgram(mainmenu,system);
+				 purchase.setVisible(true);
+				 this.frame.setVisible(false);
+				 if(list.getSelectedIndex()==0){
+					 purchase.chckbx_1.setSelected(true);
+					 purchase.txt_1.setText("700");
+				 }
+				 if(list.getSelectedIndex()==1){
+					 purchase.chckbx_2.setSelected(true);
+					 purchase.txt_2.setText("900");
+				 }
+				 if(list.getSelectedIndex()==2){
+					 purchase.chckbx_4.setSelected(true);
+					 purchase.txt_3.setText("500");
+				 }
+				 if(list.getSelectedIndex()==3){
+					 purchase.chckbx_5.setSelected(true);
+					 purchase.txt_4.setText("300");
+				 }
+				 if(list.getSelectedIndex()==4){
+					 purchase.chckbx_6.setSelected(true);
+					 purchase.txt_5.setText("100");
+				 }
+			 } else {
+				    // no option(close the dialog continue shop)
+				}
+			 
+		}
+		if(obj==btnAddYourProgram){
+			InsertProgram insertProgram = new InsertProgram(this);
+			insertProgram.frame.setSize(644, 654);
+			insertProgram.frame.setLocationRelativeTo(null);
+			insertProgram.frame.setVisible(true);
+			this.frame.setVisible(false);
+		}
 	}
 }
